@@ -46,32 +46,36 @@ void setup() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-vector<Vertex> generate_points(vector<Vertex> control_points) {
-    vector<Vertex> control_points_head;
-    control_points_head.push_back(Vertex(0,0));
+//1. create control points
+//2. run points through bezier to create like 1,000,000 points
+//3. plot 1,000,000 points x number of facial features
 
-    // TODO:
-    // Generate points for a given Chaikin or Bezier curve iteration
-
+vector<Vertex> generate_points(vector<Vertex> control_points) { //basically the bezier formula
 
 
-    return control_points_head;
+
+
+
+
+
+    return control_points;
 }
 
 void draw_curve(vector<Vertex> control_points, int n_iter) {
 
-    // TODO:
-    // Draw a Chaikin or Bezier curve based on the given control points
 
 }
 
-void display() {
+void
+
+void displacrey() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // Set our color to black (R, G, B)
     glColor3f(0.0f, 0.0f, 0.0f);
 
-    // TODO:
-    // Draw cartoon
+    glBegin(GL_POINTS);
+        generate_points(control_points);
+    glEnd();
 
     glutSwapBuffers();
 }
