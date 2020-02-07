@@ -43,45 +43,89 @@ Vertex::Vertex(GLfloat X, GLfloat Y) {
 }
 
 vector<Vertex> testCurve;
+vector<Vertex> head;
 
 void setup() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    testCurve.insert(testCurve.begin()+testCurve.size()/2, Vertex(-0.1, 0.1));
-    testCurve.push_back(Vertex(-0.1, -0.1));
-    testCurve.push_back(Vertex(0.1, -0.1));
+    testCurve.insert(testCurve.begin()+testCurve.size()/2, Vertex(-0.8, 0.8));
+    testCurve.push_back(Vertex(0.0, 0.0));
+    testCurve.push_back(Vertex(0.8, 0.8));
+
+    head.push_back(Vertex(-.85,0));
+    head.push_back(Vertex(-.8,.4));
+    head.push_back(Vertex(-.58,.69));
+    head.push_back(Vertex(0,.92));
+    head.push_back(Vertex(.63,.69));
+    head.push_back(Vertex(.8,0));
+    head.push_back(Vertex(.6,-.64));
+    head.push_back(Vertex(0,-.87));
+    head.push_back(Vertex(-.6,-.75));
+    head.push_back(Vertex(-.8,-.6));
+    head.push_back(Vertex(-.85,0));
 }
 
-vector<Vertex> generate_points(vector<Vertex> control_points, int n_iter) {
-    vector<Vertex> points;
-    points.insert(points.begin() + points.size() / 2, control_points[0]));
-    points.insert(points.begin() + points.size() / 2, control_points[control_points.size()-1]);
-    for(int j = 0; j < n_iter; j++){
-      vector<Vertex> temp;
-      for(int i = 0; i < control_points.size() - 1; i++){
-        temp.pushback(midpoint(control_points[i], control_points[i + 1]));
-      }
-      if(temp.size() >= 2){
-        points.insert(points.begin() + points.size() / 2, temp[0]));
-        points.insert(points.begin() + points.size() / 2, temp.size()-1]);
-      }else{
-        points.insert(points.begin() + points.size() / 2, temp[0]));
-      }
-    }
-
-    return points;
-}
-
-Vertex midpoint(Vertex p1, Vertex p2){
+Vertex midpoint(Vertex p1, Vertex p2) {
   GLfloat x = (p1.get_x() + p2.get_x()) / 2;
   GLfloat y = (p1.get_y() + p2.get_y()) / 2;
   return Vertex(x, y);
 }
 
-void draw_curve(vector<Vertex> control_points) {
+vector<Vertex> generate_points(vector<Vertex> control_points) {
+    vector<Vertex> points;
+    points.insert(points.begin() + points.size() / 2, control_points[0]);
+    points.insert(points.begin() + points.size() / 2, control_points[control_points.size()-1]);
+    vector<Vertex> midpointsTemp = control_points;
+    for(;;){
+      vector<Vertex> temp;
+      for(int i = 0; i < midpointsTemp.size() - 1; i++){
+        temp.push_back(midpoint(midpointsTemp[i], midpointsTemp[i + 1]));
+      }
+      if(temp.size() >= 2){
+        points.insert(points.begin() + points.size() / 2, temp[0]);
+        points.insert(points.begin() + points.size() / 2, temp[temp.size()-1]);
+      }else{
+        points.insert(points.begin() + points.size() / 2, temp[0]);
+        break;
+      }
+      midpointsTemp = temp;
+    }
+
+    return points;
+}
+
+
+void draw_curve(vector<Vertex> control_points, int n_iter) {
+
+  for(int i = 0; i < n_iter; i++){
+    control_points = generate_points(control_points);
+  }
+
+
+  glBegin(GL_LINES);
+  int counter = 0;
+  for(int i = 0; i < control_points.size(); i++){
+    glVertex2f(control_points[i].get_x(), control_points[i].get_y());
+    counter++;
+    if(counter == 2){
+      i--;
+      counter = 0;
+    }
+  }
+
+  glEnd();
+
+  glPointSize(5.0f);
+
+  glColor3f(1.0f, 0.0f, 0.0f);
 
   glBegin(GL_POINTS);
-  generate_points(control_points);
+  for(int i = 0; i < control_points.size(); i++){
+    glVertex2f(control_points[i].get_x(), control_points[i].get_y());
+  }
+
   glEnd();
+
+
 
 }
 
@@ -90,8 +134,9 @@ void display() {
     // Set our color to black (R, G, B)
     glColor3f(0.0f, 0.0f, 0.0f);
 
-    // TODO:
-    // Draw cartoon
+    glLineWidth(10.0f);
+
+    draw_curve(head,5);
 
     glutSwapBuffers();
 }
@@ -99,7 +144,7 @@ void display() {
 int main(int argc, char *argv[]) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-    glutInitWindowSize(800, 600); // Set your own window size
+    glutInitWindowSize(2000, 2000); // Set your own window size
     glutCreateWindow("Assignment 1");
     setup();
     glutDisplayFunc(display);
