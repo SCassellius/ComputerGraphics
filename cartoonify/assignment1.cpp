@@ -47,18 +47,27 @@ vector<Vertex> testCurve;
 void setup() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     testCurve.insert(testCurve.begin()+testCurve.size()/2, Vertex(-0.1, 0.1));
-    testCurve.push_back(Vertex(-0.1, 0.1));
     testCurve.push_back(Vertex(-0.1, -0.1));
     testCurve.push_back(Vertex(0.1, -0.1));
 }
 
 vector<Vertex> generate_points(vector<Vertex> control_points) {
     vector<Vertex> points;
+    testCurve.insert(testCurve.begin()+testCurve.size()/2, control_points[0]));
+    testCurve.insert(testCurve.begin()+testCurve.size()/2, control_points[control_points.size()-1]);
+    for(int i = 0; i < control_points.size() - 1; i++){
 
-    // TODO:
-    // Generate points for a given Chaikin or Bezier curve iteration
+    }
+
+
 
     return points;
+}
+
+Vertex midpoint(Vertex p1, Vertex p2){
+  GLfloat x = (p1.get_x() + p2.get_x()) / 2;
+  GLfloat y = (p1.get_y() + p2.get_y()) / 2;
+  return Vertex(x, y);
 }
 
 void draw_curve(vector<Vertex> control_points, int n_iter) {
