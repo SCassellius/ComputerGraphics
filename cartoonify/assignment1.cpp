@@ -51,15 +51,22 @@ void setup() {
     testCurve.push_back(Vertex(0.1, -0.1));
 }
 
-vector<Vertex> generate_points(vector<Vertex> control_points) {
+vector<Vertex> generate_points(vector<Vertex> control_points, int n_iter) {
     vector<Vertex> points;
-    testCurve.insert(testCurve.begin()+testCurve.size()/2, control_points[0]));
-    testCurve.insert(testCurve.begin()+testCurve.size()/2, control_points[control_points.size()-1]);
-    for(int i = 0; i < control_points.size() - 1; i++){
-
+    points.insert(points.begin() + points.size() / 2, control_points[0]));
+    points.insert(points.begin() + points.size() / 2, control_points[control_points.size()-1]);
+    for(int j = 0; j < n_iter; j++){
+      vector<Vertex> temp;
+      for(int i = 0; i < control_points.size() - 1; i++){
+        temp.pushback(midpoint(control_points[i], control_points[i + 1]));
+      }
+      if(temp.size() >= 2){
+        points.insert(points.begin() + points.size() / 2, temp[0]));
+        points.insert(points.begin() + points.size() / 2, temp.size()-1]);
+      }else{
+        points.insert(points.begin() + points.size() / 2, temp[0]));
+      }
     }
-
-
 
     return points;
 }
@@ -70,10 +77,11 @@ Vertex midpoint(Vertex p1, Vertex p2){
   return Vertex(x, y);
 }
 
-void draw_curve(vector<Vertex> control_points, int n_iter) {
+void draw_curve(vector<Vertex> control_points) {
 
-    // TODO:
-    // Draw a Chaikin or Bezier curve based on the given control points
+  glBegin(GL_POINTS);
+  generate_points(control_points);
+  glEnd();
 
 }
 
