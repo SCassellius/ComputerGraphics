@@ -9,7 +9,7 @@
  you may speak with classmates on high level algorithmic concepts. Please
  list their names in this section
 
- Project Summary: I have drawn Charlie Brown using Bezier's algorithm iterativly.
+ Project Summary: I have drawn Charlie Brown (in colors he would love) using Bezier's algorithm iterativly.
  It's a little rough, but it took a long time and after all of my frustration,
  I am rather happy with how it turned out. His face is slightly oblong but honestly
  that is the shape of his face in the picture provided.
@@ -50,6 +50,10 @@ vector<Vertex> control_points_nose;
 vector<Vertex> control_points_hair1;
 vector<Vertex> control_points_hair2;
 vector<Vertex> control_points_right_eyebrow;
+vector<Vertex> control_points_right_eye;
+vector<Vertex> control_points_left_eye;
+vector<Vertex> control_points_right_ear;
+vector<Vertex> control_points_left_ear;
 
 void setup() {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -135,6 +139,33 @@ void setup() {
       control_points_right_eyebrow.push_back(Vertex(-.08,.28));
       control_points_right_eyebrow.push_back(Vertex(-.125,.34));
       control_points_right_eyebrow.push_back(Vertex(-.17,.3));
+
+      control_points_right_eye.push_back(Vertex(-.32,.07));
+      control_points_right_eye.push_back(Vertex(-.32,.11));
+      control_points_right_eye.push_back(Vertex(-.24,.19));
+      control_points_right_eye.push_back(Vertex(-.13,.07));
+      control_points_right_eye.push_back(Vertex(-.24,-.03));
+      control_points_right_eye.push_back(Vertex(-.32,.03));
+      control_points_right_eye.push_back(Vertex(-.32,.07));
+
+      control_points_left_eye.push_back(Vertex(.22,.07));
+      control_points_left_eye.push_back(Vertex(.22,.11));
+      control_points_left_eye.push_back(Vertex(.34,.19));
+      control_points_left_eye.push_back(Vertex(.4,.07));
+      control_points_left_eye.push_back(Vertex(.34,-.03));
+      control_points_left_eye.push_back(Vertex(.22,.03));
+      control_points_left_eye.push_back(Vertex(.22,.07));
+
+      control_points_right_ear.push_back(Vertex(-.765,0));
+      control_points_right_ear.push_back(Vertex(-1.1,-.2));
+      control_points_right_ear.push_back(Vertex(-.767,-.35));
+
+      control_points_left_ear.push_back(Vertex(.75,0));
+      control_points_left_ear.push_back(Vertex(.83,.05));
+      control_points_left_ear.push_back(Vertex(1.15,-.3));
+      control_points_left_ear.push_back(Vertex(.85,-.6));
+      control_points_left_ear.push_back(Vertex(.73,-.35));
+      control_points_left_ear.push_back(Vertex(.67,-.4));
 }
 
 Vertex midpoint(Vertex p1, Vertex p2) {
@@ -202,6 +233,10 @@ void display() {
     draw_curve(control_points_hair1,3);
     draw_curve(control_points_hair2,3);
     draw_curve(control_points_right_eyebrow,2);
+    draw_curve(control_points_right_eye,2);
+    draw_curve(control_points_left_eye,2);
+    draw_curve(control_points_right_ear,3);
+    draw_curve(control_points_left_ear,3);
 
     // glColor3f(1.0f, 0.0f, 0.0f);
     // glPointSize(10.0f);
