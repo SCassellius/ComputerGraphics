@@ -46,9 +46,12 @@ Vertex::Vertex(GLfloat X, GLfloat Y) {
 vector<Vertex> testCurve;
 vector<Vertex> control_points_head;
 vector<Vertex> control_points_mouth;
+vector<Vertex> control_points_nose;
+vector<Vertex> control_points_hair1;
+vector<Vertex> control_points_hair2;
 
 void setup() {
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     // testCurve.insert(testCurve.begin()+testCurve.size()/2, Vertex(-0.8, 0.8));
     // testCurve.push_back(Vertex(0.0, 0.0));
     // testCurve.push_back(Vertex(0.8, 0.8));
@@ -101,12 +104,24 @@ void setup() {
       control_points_head.push_back(Vertex(.05,-.85));
       control_points_head.push_back(Vertex(0,-.85));
 
-      control_points_mouth.push_back(Vertex(-.525,-.25));
-      control_points_mouth.push_back(Vertex(-.6,-.3));
-      control_points_mouth.push_back(Vertex(-.35,-.6));
-      control_points_mouth.push_back(Vertex(0,-.65));
-      control_points_mouth.push_back(Vertex(.25,-.6));
-      control_points_mouth.push_back(Vertex(.5,-.3));
+      control_points_mouth.push_back(Vertex(-.525,-.35));
+      control_points_mouth.push_back(Vertex(-.6,-.4));
+      control_points_mouth.push_back(Vertex(-.35,-.7));
+      control_points_mouth.push_back(Vertex(0,-.75));
+      control_points_mouth.push_back(Vertex(.25,-.7));
+      control_points_mouth.push_back(Vertex(.5,-.4));
+
+      control_points_nose.push_back(Vertex(.1,-.03));
+      control_points_nose.push_back(Vertex(-.4,-.2));
+      control_points_nose.push_back(Vertex(.1,-.25));
+
+      control_points_hair1.push_back(Vertex(.3,.4));
+      control_points_hair1.push_back(Vertex(.15,.35));
+      control_points_hair1.push_back(Vertex(.08,.5));
+
+      control_points_hair2.push_back(Vertex(.08,.5));
+      control_points_hair2.push_back(Vertex(-.05,.3));
+      control_points_hair2.push_back(Vertex());
 }
 
 Vertex midpoint(Vertex p1, Vertex p2) {
@@ -164,12 +179,35 @@ void draw_curve(vector<Vertex> control_points, int n_iter) {
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // Set our color to black (R, G, B)
-    glColor3f(0.0f, 0.0f, 0.0f);
+    glColor3f(1.0f, 1.0f, 0.0f);
 
     glLineWidth(7.0f);
 
-    draw_curve(control_points_head,5);
+    draw_curve(control_points_head,1);
     draw_curve(control_points_mouth,5);
+    draw_curve(control_points_nose, 5);
+    draw_curve(control_points_hair1,3);
+
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glPointSize(10.0f);
+    glBegin(GL_POINTS);
+    for(int i = 0; i < control_points_head.size(); i++){
+      glVertex2f(control_points_head[i].get_x(), control_points_head[i].get_y());
+    }
+    glColor3f(0.0f, 1.0f, 0.0f);
+    for(int i = 0; i < control_points_nose.size(); i++){
+      glVertex2f(control_points_nose[i].get_x(), control_points_nose[i].get_y());
+    }
+    glColor3f(0.0f, 0.0f, 1.0f);
+    for(int i = 0; i < control_points_mouth.size(); i++){
+      glVertex2f(control_points_mouth[i].get_x(), control_points_mouth[i].get_y());
+    }
+    glColor3f(0.0f, 1.0f, 1.0f);
+    for(int i = 0; i < control_points_hair1.size(); i++){
+      glVertex2f(control_points_hair1[i].get_x(), control_points_hair1[i].get_y());
+    }
+    glEnd();
+
 
     glutSwapBuffers();
 }
