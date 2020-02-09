@@ -49,6 +49,7 @@ vector<Vertex> control_points_mouth;
 vector<Vertex> control_points_nose;
 vector<Vertex> control_points_hair1;
 vector<Vertex> control_points_hair2;
+vector<Vertex> control_points_right_eyebrow;
 
 void setup() {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -111,17 +112,29 @@ void setup() {
       control_points_mouth.push_back(Vertex(.25,-.7));
       control_points_mouth.push_back(Vertex(.5,-.4));
 
-      control_points_nose.push_back(Vertex(.1,-.03));
-      control_points_nose.push_back(Vertex(-.4,-.2));
-      control_points_nose.push_back(Vertex(.1,-.25));
+      control_points_nose.push_back(Vertex(.1,.18));
+      control_points_nose.push_back(Vertex(-.17,.2));
+      control_points_nose.push_back(Vertex(-.4,-.05));
+      control_points_nose.push_back(Vertex(-.17,-.15));
+      control_points_nose.push_back(Vertex(-.05,-.1));
+      control_points_nose.push_back(Vertex(.1,-.1));
 
-      control_points_hair1.push_back(Vertex(.3,.4));
-      control_points_hair1.push_back(Vertex(.15,.35));
-      control_points_hair1.push_back(Vertex(.08,.5));
+      control_points_hair1.push_back(Vertex(.3,.3));
+      control_points_hair1.push_back(Vertex(.15,.25));
+      control_points_hair1.push_back(Vertex(.08,.4));
 
-      control_points_hair2.push_back(Vertex(.08,.5));
-      control_points_hair2.push_back(Vertex(-.05,.3));
-      control_points_hair2.push_back(Vertex());
+      control_points_hair2.push_back(Vertex(.08,.4));
+      control_points_hair2.push_back(Vertex(-.05,.2));
+      control_points_hair2.push_back(Vertex(-.4,.46));
+      control_points_hair2.push_back(Vertex(.055,.7));
+      control_points_hair2.push_back(Vertex(-.05,.7));
+      control_points_hair2.push_back(Vertex(.07,.25));
+      control_points_hair2.push_back(Vertex(.2,.47));
+      control_points_hair2.push_back(Vertex(.2,.52));
+
+      control_points_right_eyebrow.push_back(Vertex(-.08,.28));
+      control_points_right_eyebrow.push_back(Vertex(-.125,.34));
+      control_points_right_eyebrow.push_back(Vertex(-.17,.3));
 }
 
 Vertex midpoint(Vertex p1, Vertex p2) {
@@ -187,26 +200,32 @@ void display() {
     draw_curve(control_points_mouth,5);
     draw_curve(control_points_nose, 5);
     draw_curve(control_points_hair1,3);
+    draw_curve(control_points_hair2,3);
+    draw_curve(control_points_right_eyebrow,2);
 
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glPointSize(10.0f);
-    glBegin(GL_POINTS);
-    for(int i = 0; i < control_points_head.size(); i++){
-      glVertex2f(control_points_head[i].get_x(), control_points_head[i].get_y());
-    }
-    glColor3f(0.0f, 1.0f, 0.0f);
-    for(int i = 0; i < control_points_nose.size(); i++){
-      glVertex2f(control_points_nose[i].get_x(), control_points_nose[i].get_y());
-    }
-    glColor3f(0.0f, 0.0f, 1.0f);
-    for(int i = 0; i < control_points_mouth.size(); i++){
-      glVertex2f(control_points_mouth[i].get_x(), control_points_mouth[i].get_y());
-    }
-    glColor3f(0.0f, 1.0f, 1.0f);
-    for(int i = 0; i < control_points_hair1.size(); i++){
-      glVertex2f(control_points_hair1[i].get_x(), control_points_hair1[i].get_y());
-    }
-    glEnd();
+    // glColor3f(1.0f, 0.0f, 0.0f);
+    // glPointSize(10.0f);
+    // glBegin(GL_POINTS);
+    // for(int i = 0; i < control_points_head.size(); i++){
+    //   glVertex2f(control_points_head[i].get_x(), control_points_head[i].get_y());
+    // }
+    // glColor3f(0.0f, 1.0f, 0.0f);
+    // for(int i = 0; i < control_points_nose.size(); i++){
+    //   glVertex2f(control_points_nose[i].get_x(), control_points_nose[i].get_y());
+    // }
+    // glColor3f(0.0f, 0.0f, 1.0f);
+    // for(int i = 0; i < control_points_mouth.size(); i++){
+    //   glVertex2f(control_points_mouth[i].get_x(), control_points_mouth[i].get_y());
+    // }
+    // glColor3f(0.0f, 1.0f, 1.0f);
+    // for(int i = 0; i < control_points_hair1.size(); i++){
+    //   glVertex2f(control_points_hair1[i].get_x(), control_points_hair1[i].get_y());
+    // }
+    // glColor3f(0.0f, 1.0f, 1.0f);
+    // for(int i = 0; i < control_points_hair2.size(); i++){
+    //   glVertex2f(control_points_hair2[i].get_x(), control_points_hair2[i].get_y());
+    // }
+    // glEnd();
 
 
     glutSwapBuffers();
