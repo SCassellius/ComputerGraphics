@@ -2,16 +2,17 @@
  assignment1.cpp
  Assignment-1: Cartoonify
 
- Name: Wong, Alex (Please write your name in Last Name, First Name format)
+ Name: Cassellius, Seth
 
- Collaborators: Doe, John; Doe, Jane
+ Collaborators: Tim Herrmann
  ** Note: although the assignment should be completed individually
  you may speak with classmates on high level algorithmic concepts. Please
  list their names in this section
 
- Project Summary: A short paragraph (3-4 sentences) describing the work you
- did for the project: e.g. did you use the Chaikin's or Bezier's algorithm?
- Did you take an iterative or recursive approach?
+ Project Summary: I have drawn Charlie Brown using Bezier's algorithm iterativly.
+ It's a little rough, but it took a long time and after all of my frustration,
+ I am rather happy with how it turned out. His face is slightly oblong but honestly
+ that is the shape of his face in the picture provided.
  ***/
 
 
@@ -43,25 +44,69 @@ Vertex::Vertex(GLfloat X, GLfloat Y) {
 }
 
 vector<Vertex> testCurve;
-vector<Vertex> head;
+vector<Vertex> control_points_head;
+vector<Vertex> control_points_mouth;
 
 void setup() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    testCurve.insert(testCurve.begin()+testCurve.size()/2, Vertex(-0.8, 0.8));
-    testCurve.push_back(Vertex(0.0, 0.0));
-    testCurve.push_back(Vertex(0.8, 0.8));
+    // testCurve.insert(testCurve.begin()+testCurve.size()/2, Vertex(-0.8, 0.8));
+    // testCurve.push_back(Vertex(0.0, 0.0));
+    // testCurve.push_back(Vertex(0.8, 0.8));
+    //
+    // control_points_head.push_back(Vertex(-.85,0));
+    // control_points_head.push_back(Vertex(-.8,.4));
+    // control_points_head.push_back(Vertex(-.58,.69));
+    // control_points_head.push_back(Vertex(0,.92));
+    // control_points_head.push_back(Vertex(.63,.69));
+    // control_points_head.push_back(Vertex(.8,0));
+    // control_points_head.push_back(Vertex(.6,-.64));
+    // control_points_head.push_back(Vertex(0,-.87));
+    // control_points_head.push_back(Vertex(-.6,-.75));
+    // control_points_head.push_back(Vertex(-.8,-.6));
+    // control_points_head.push_back(Vertex(-.85,0));
+      control_points_head.push_back(Vertex(0,-.85));
+      control_points_head.push_back(Vertex(-0.05,-.85));
+      control_points_head.push_back(Vertex(-0.1,-.85));
+      control_points_head.push_back(Vertex(-0.2,-.83));
+      control_points_head.push_back(Vertex(-.3,-.8));
+      control_points_head.push_back(Vertex(-.4,-.77));
+      control_points_head.push_back(Vertex(-.5,-.73));
+      control_points_head.push_back(Vertex(-.6,-.67));
+      control_points_head.push_back(Vertex(-.7,-.57));
+      control_points_head.push_back(Vertex(-.8,-.42));
+      control_points_head.push_back(Vertex(-.84,-.3));
+      control_points_head.push_back(Vertex(-.86,-.2));
+      control_points_head.push_back(Vertex(-.86,-.1));
+      control_points_head.push_back(Vertex(-.85,0));
+      control_points_head.push_back(Vertex(-.8,.2));
+      control_points_head.push_back(Vertex(-.8,.67));
+      control_points_head.push_back(Vertex(-.3,.78));
+      control_points_head.push_back(Vertex(0,.85));
+      control_points_head.push_back(Vertex(.2,.82));
+      control_points_head.push_back(Vertex(.4,.77));
+      control_points_head.push_back(Vertex(.6,.63));
+      control_points_head.push_back(Vertex(.7,.5));
+      control_points_head.push_back(Vertex(.75,.4));
+      control_points_head.push_back(Vertex(.78,.3));
+      control_points_head.push_back(Vertex(.8,.1));
+      control_points_head.push_back(Vertex(.8,0));
+      control_points_head.push_back(Vertex(.795,-.1));
+      control_points_head.push_back(Vertex(.76,-.4));
+      control_points_head.push_back(Vertex(.7,-.5));
+      control_points_head.push_back(Vertex(.6,-.63));
+      control_points_head.push_back(Vertex(.4,-.78));
+      control_points_head.push_back(Vertex(.2,-.84));
+      control_points_head.push_back(Vertex(.15,-.85));
+      control_points_head.push_back(Vertex(.1,-.85));
+      control_points_head.push_back(Vertex(.05,-.85));
+      control_points_head.push_back(Vertex(0,-.85));
 
-    head.push_back(Vertex(-.85,0));
-    head.push_back(Vertex(-.8,.4));
-    head.push_back(Vertex(-.58,.69));
-    head.push_back(Vertex(0,.92));
-    head.push_back(Vertex(.63,.69));
-    head.push_back(Vertex(.8,0));
-    head.push_back(Vertex(.6,-.64));
-    head.push_back(Vertex(0,-.87));
-    head.push_back(Vertex(-.6,-.75));
-    head.push_back(Vertex(-.8,-.6));
-    head.push_back(Vertex(-.85,0));
+      control_points_mouth.push_back(Vertex(-.525,-.25));
+      control_points_mouth.push_back(Vertex(-.6,-.3));
+      control_points_mouth.push_back(Vertex(-.35,-.6));
+      control_points_mouth.push_back(Vertex(0,-.65));
+      control_points_mouth.push_back(Vertex(.25,-.6));
+      control_points_mouth.push_back(Vertex(.5,-.3));
 }
 
 Vertex midpoint(Vertex p1, Vertex p2) {
@@ -114,19 +159,6 @@ void draw_curve(vector<Vertex> control_points, int n_iter) {
 
   glEnd();
 
-  glPointSize(5.0f);
-
-  glColor3f(1.0f, 0.0f, 0.0f);
-
-  glBegin(GL_POINTS);
-  for(int i = 0; i < control_points.size(); i++){
-    glVertex2f(control_points[i].get_x(), control_points[i].get_y());
-  }
-
-  glEnd();
-
-
-
 }
 
 void display() {
@@ -134,9 +166,10 @@ void display() {
     // Set our color to black (R, G, B)
     glColor3f(0.0f, 0.0f, 0.0f);
 
-    glLineWidth(10.0f);
+    glLineWidth(7.0f);
 
-    draw_curve(head,5);
+    draw_curve(control_points_head,5);
+    draw_curve(control_points_mouth,5);
 
     glutSwapBuffers();
 }
