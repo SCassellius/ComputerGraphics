@@ -75,9 +75,24 @@ vector<GLfloat> to_cartesian_coord(vector<GLfloat> homogenous_coords) {
 // Definition of a rotation matrix about the x-axis theta degrees
 vector<GLfloat> rotation_matrix_x (float theta) {
     vector<GLfloat> rotate_mat_x;
-
-    // TODO: Define the rotation matrix about the x-axis
-
+    GLfloat cosVal = cos(theta);
+    GLfloat sinVal = sin(theta);
+    rotate_mat_x.push_back(1);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(cosVal);
+    rotate_mat_x.push_back(sinVal * -1);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(sinVal);
+    rotate_mat_x.push_back(cosVal);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(1);
     return rotate_mat_x;
 }
 
@@ -93,9 +108,22 @@ vector<GLfloat> rotation_matrix_y (float theta) {
 // Definition of a rotation matrix along the z-axis by theta degrees
 vector<GLfloat> rotation_matrix_z (float theta) {
     vector<GLfloat> rotate_mat_z;
-
-    // TODO: Define the rotation matrix about the z-axis
-
+    GLfloat cosVal = cos(theta);
+    GLfloat sinVal = sin(theta);
+    rotate_mat_z.push_back(cosVal);
+    rotate_mat_z.push_back(sinVal * -1);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(sinVal);
+    rotate_mat_z.push_back(cosVal);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(1);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(1);
     return rotate_mat_z;
 }
 
@@ -220,7 +248,7 @@ void display_func() {
     // TODO: Apply rotation(s) to the set of points
 
 
-    printArray(to_cartesian_coord(to_homogenous_coord(points)));
+    printArray(rotation_matrix_x(90));
 
     GLfloat* vertices = vector2array(points);
 
