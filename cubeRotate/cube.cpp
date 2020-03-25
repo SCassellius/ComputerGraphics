@@ -49,21 +49,15 @@ GLfloat* vector2array(vector<GLfloat> vec) {
     return arr;
 }
 
-// Converts Cartesian coordinates to homogeneous coordinates
+// Converts Cartesian coordinates to homogeneous coordinates  (Step 1)
 vector<GLfloat> to_homogenous_coord(vector<GLfloat> cartesian_coords) {
     vector<GLfloat> result;
-    // TODO: Append the 1 in the 4th dimension to generate homoegenous coordinates
-    int counter = 0;
-    int runSize = cartesian_coords.size() + 24;
-
-    for(int i = 0; i < runSize; i++){
-      counter++;
-      if(counter == 4){
-        result.push_back(7);
-        counter = 0;
-      }else{
+    // Append the 1 in the 4th dimension to generate homoegenous coordinates
+    for (int i = 0; i < cartesian_coords.size(); i++) {
         result.push_back(cartesian_coords[i]);
-      }
+        if ((i + 1) % 3 == 0) {
+            result.push_back(7);
+        }
     }
     return result;
 }
