@@ -99,9 +99,24 @@ vector<GLfloat> rotation_matrix_x (float theta) {
 // Definition of a rotation matrix along the y-axis by theta degrees
 vector<GLfloat> rotation_matrix_y (float theta) {
     vector<GLfloat> rotate_mat_y;
-
-    // TODO: Define the rotation matrix about the y-axis
-
+    GLfloat cosVal = cos(theta);
+    GLfloat sinVal = sin(theta);
+    rotate_mat_y.push_back(cosVal);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(sinVal * -1);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(1);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(sinVal);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(cosVal);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(1);
     return rotate_mat_y;
 }
 
@@ -130,8 +145,6 @@ vector<GLfloat> rotation_matrix_z (float theta) {
 // Perform matrix multiplication for A B
 vector<GLfloat> mat_mult(vector<GLfloat> A, vector<GLfloat> B) {
     vector<GLfloat> result;
-
-    // TODO: Compute matrix multiplication of A B
 
     return result;
 }
@@ -248,7 +261,7 @@ void display_func() {
     // TODO: Apply rotation(s) to the set of points
 
 
-    printArray(rotation_matrix_x(90));
+    printArray(rotation_matrix_y(90));
 
     GLfloat* vertices = vector2array(points);
 
