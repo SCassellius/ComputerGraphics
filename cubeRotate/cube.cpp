@@ -52,11 +52,10 @@ GLfloat* vector2array(vector<GLfloat> vec) {
 // Converts Cartesian coordinates to homogeneous coordinates  (Step 1)
 vector<GLfloat> to_homogenous_coord(vector<GLfloat> cartesian_coords) {
     vector<GLfloat> result;
-    // Append the 1 in the 4th dimension to generate homoegenous coordinates
     for (int i = 0; i < cartesian_coords.size(); i++) {
         result.push_back(cartesian_coords[i]);
         if ((i + 1) % 3 == 0) {
-            result.push_back(7);
+            result.push_back(1);
         }
     }
     return result;
@@ -65,9 +64,11 @@ vector<GLfloat> to_homogenous_coord(vector<GLfloat> cartesian_coords) {
 // Converts Cartesian coordinates to homogeneous coordinates
 vector<GLfloat> to_cartesian_coord(vector<GLfloat> homogenous_coords) {
     vector<GLfloat> result;
-
-    // TODO: Remove the 1 in the 4th dimension to generate Cartesian coordinates
-
+    for (int i = 0; i < homogenous_coords.size(); i++) {
+        if ((i + 1) % 4 != 0) {
+            result.push_back(homogenous_coords[i]);
+        }
+    }
     return result;
 }
 
@@ -219,7 +220,7 @@ void display_func() {
     // TODO: Apply rotation(s) to the set of points
 
 
-    printArray(to_homogenous_coord(points));
+    printArray(to_cartesian_coord(to_homogenous_coord(points)));
 
     GLfloat* vertices = vector2array(points);
 
