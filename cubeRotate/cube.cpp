@@ -279,9 +279,9 @@ void display_func() {
     // TODO: Apply rotation(s) to the set of points
 
     points = to_homogenous_coord(points);
-    points = mat_mult(rotation_matrix_x(30), points);
-    points = mat_mult(rotation_matrix_y(30), points);
-    points = mat_mult(rotation_matrix_z(30), points);
+    points = mat_mult(rotation_matrix_x(theta), points);
+    points = mat_mult(rotation_matrix_y(theta), points);
+    points = mat_mult(rotation_matrix_z(theta), points);
     points = to_cartesian_coord(points);
 
 
@@ -306,7 +306,7 @@ void display_func() {
 }
 
 void idle_func() {
-    theta = theta+0.3;
+    theta = theta+0.003;
     display_func();
 }
 
