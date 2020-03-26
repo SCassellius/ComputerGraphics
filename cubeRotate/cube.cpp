@@ -84,8 +84,9 @@ vector<GLfloat> to_cartesian_coord(vector<GLfloat> homogenous_coords) {
 // Definition of a rotation matrix about the x-axis theta degrees
 vector<GLfloat> rotation_matrix_x (float theta) {
     vector<GLfloat> rotate_mat_x;
-    GLfloat cosVal = cos(theta);
-    GLfloat sinVal = sin(theta);
+    GLfloat thetaInRadians = deg2rad(theta);
+    GLfloat cosVal = cos(thetaInRadians);
+    GLfloat sinVal = sin(thetaInRadians);
     rotate_mat_x.push_back(1);
     rotate_mat_x.push_back(0);
     rotate_mat_x.push_back(0);
@@ -108,8 +109,9 @@ vector<GLfloat> rotation_matrix_x (float theta) {
 // Definition of a rotation matrix along the y-axis by theta degrees
 vector<GLfloat> rotation_matrix_y (float theta) {
     vector<GLfloat> rotate_mat_y;
-    GLfloat cosVal = cos(theta);
-    GLfloat sinVal = sin(theta);
+    GLfloat thetaInRadians = deg2rad(theta);
+    GLfloat cosVal = cos(thetaInRadians);
+    GLfloat sinVal = sin(thetaInRadians);
     rotate_mat_y.push_back(cosVal);
     rotate_mat_y.push_back(0);
     rotate_mat_y.push_back(sinVal * -1);
@@ -132,14 +134,17 @@ vector<GLfloat> rotation_matrix_y (float theta) {
 // Definition of a rotation matrix along the z-axis by theta degrees
 vector<GLfloat> rotation_matrix_z (float theta) {
     vector<GLfloat> rotate_mat_z;
-    GLfloat cosVal = cos(theta);
-    GLfloat sinVal = sin(theta);
+    GLfloat thetaInRadians = deg2rad(theta);
+    GLfloat cosVal = cos(thetaInRadians);
+    GLfloat sinVal = sin(thetaInRadians);
     rotate_mat_z.push_back(cosVal);
     rotate_mat_z.push_back(sinVal * -1);
     rotate_mat_z.push_back(0);
     rotate_mat_z.push_back(0);
     rotate_mat_z.push_back(sinVal);
     rotate_mat_z.push_back(cosVal);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(0);
     rotate_mat_z.push_back(0);
     rotate_mat_z.push_back(0);
     rotate_mat_z.push_back(1);
@@ -194,7 +199,7 @@ void init_camera() {
     // Define a 50 degree field of view, 1:1 aspect ratio, near and far planes at 3 and 7
     gluPerspective(50.0, 1.0, 2.0, 10.0);
     // Position camera at (2, 3, 5), attention at (0, 0, 0), up at (0, 1, 0)
-    gluLookAt(2.0, 6.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt(2.0, 3.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 void display_func() {
@@ -274,10 +279,11 @@ void display_func() {
     // TODO: Apply rotation(s) to the set of points
 
     points = to_homogenous_coord(points);
-    points = mat_mult(rotation_matrix_x(90), points);
-    points = mat_mult(rotation_matrix_y(90), points);
-    points = mat_mult(rotation_matrix_z(90), points);
+    points = mat_mult(rotation_matrix_x(30), points);
+    points = mat_mult(rotation_matrix_y(30), points);
+    points = mat_mult(rotation_matrix_z(30), points);
     points = to_cartesian_coord(points);
+
 
     GLfloat* vertices = vector2array(points);
 
