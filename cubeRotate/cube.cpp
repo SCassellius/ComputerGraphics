@@ -49,6 +49,15 @@ GLfloat* vector2array(vector<GLfloat> vec) {
     return arr;
 }
 
+void printArray(vector<GLfloat> array) {
+  if(runPrintArray < 1){
+    for(int i = 0; i < array.size(); i++){
+      cout << array[i] << " ";
+    }
+    runPrintArray++;
+  }
+}
+
 // Converts Cartesian coordinates to homogeneous coordinates  (Step 1)
 vector<GLfloat> to_homogenous_coord(vector<GLfloat> cartesian_coords) {
     vector<GLfloat> result;
@@ -142,9 +151,23 @@ vector<GLfloat> rotation_matrix_z (float theta) {
     return rotate_mat_z;
 }
 
-// Perform matrix multiplication for A B
+// Perform matrix multiplication for A(the rotation matrix, 4x4) and B(the 24x4 homogenous points)
 vector<GLfloat> mat_mult(vector<GLfloat> A, vector<GLfloat> B) {
     vector<GLfloat> result;
+    GLfloat temp = 0;
+    for(int k = 0; k < 24; k++){
+      vector<GLfloat> point;
+      for(int l = 0; l < 4; l++){
+        point.push_back(B[(k * 4) + l]);
+      }
+      for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+          temp = temp + (A[(4 * i) + j] * point[j]);
+        }
+        result.push_back(temp);
+        temp = 0;
+      }
+    }
 
     return result;
 }
@@ -173,16 +196,6 @@ void init_camera() {
     // Position camera at (2, 3, 5), attention at (0, 0, 0), up at (0, 1, 0)
     gluLookAt(2.0, 3.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 }
-
-void printArray(vector<GLfloat> array) {
-  if(runPrintArray < 1){
-    for(int i = 0; i < array.size(); i++){
-      cout << array[i] << " ";
-    }
-    runPrintArray++;
-  }
-}
-
 
 void display_func() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -260,8 +273,15 @@ void display_func() {
 
     // TODO: Apply rotation(s) to the set of points
 
+    vector<GLfloat> A = {
+      1,2,3,4,
+      5,6,7,8,
+      9,10,11,12,
+      13,14,15,16
+    };
+    vector<GLfloat> B = {1,2,3,4};
 
-    printArray(rotation_matrix_y(90));
+    printArray(mat_mult(A,to_homogenous_coord(points)));
 
     GLfloat* vertices = vector2array(points);
 
