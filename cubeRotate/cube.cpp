@@ -132,8 +132,8 @@ vector<GLfloat> rotation_matrix_y (float theta) {
 // Definition of a rotation matrix along the z-axis by theta degrees
 vector<GLfloat> rotation_matrix_z (float theta) {
     vector<GLfloat> rotate_mat_z;
-    GLfloat cosVal = cos(theta);
-    GLfloat sinVal = sin(theta);
+    GLfloat cosVal = deg2rad(theta);
+    GLfloat sinVal = deg2rad(theta);
     rotate_mat_z.push_back(cosVal);
     rotate_mat_z.push_back(sinVal * -1);
     rotate_mat_z.push_back(0);
@@ -273,15 +273,9 @@ void display_func() {
 
     // TODO: Apply rotation(s) to the set of points
 
-    vector<GLfloat> A = {
-      1,2,3,4,
-      5,6,7,8,
-      9,10,11,12,
-      13,14,15,16
-    };
-    vector<GLfloat> B = {1,2,3,4};
-
-    printArray(mat_mult(A,to_homogenous_coord(points)));
+    points = to_homogenous_coord(points);
+    points = mat_mult(rotation_matrix_y(180), points);
+    points = to_cartesian_coord(points);
 
     GLfloat* vertices = vector2array(points);
 
