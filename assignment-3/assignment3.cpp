@@ -33,7 +33,7 @@
 #include <vector>
 using namespace std;
 
-// If a float is < EPSILON or > -EPILSON then it should be 0
+// If a float is < EPSILON or > -EPSILON then it should be 0
 float EPSILON = 0.000001;
 // theta is the angle to rotate the scene
 float THETA = 0.0;
@@ -103,27 +103,69 @@ vector<GLfloat> to_cartesian_coord(vector<GLfloat> homogeneous_coords) {
 // Definition of a translation matrix
 vector<GLfloat> translation_matrix (float dx, float dy, float dz) {
     vector<GLfloat> translate_mat;
-
-    // TODO: Define translation matrix
-
+    translate_mat.push_back(1);
+    translate_mat.push_back(0);
+    translate_mat.push_back(0);
+    translate_mat.push_back(0);
+    translate_mat.push_back(0);
+    translate_mat.push_back(1);
+    translate_mat.push_back(0);
+    translate_mat.push_back(0);
+    translate_mat.push_back(0);
+    translate_mat.push_back(0);
+    translate_mat.push_back(1);
+    translate_mat.push_back(0);
+    translate_mat.push_back(dx);
+    translate_mat.push_back(dy);
+    translate_mat.push_back(dz);
+    translate_mat.push_back(1);
     return translate_mat;
 }
 
 // Definition of a scaling matrix
 vector<GLfloat> scaling_matrix (float sx, float sy, float sz) {
     vector<GLfloat> scale_mat;
-
-    // TODO: Define scaling matrix
-
+    scaling_matrix.push_back(sx);
+    scaling_matrix.push_back(0);
+    scaling_matrix.push_back(0);
+    scaling_matrix.push_back(0);
+    scaling_matrix.push_back(0);
+    scaling_matrix.push_back(ky);
+    scaling_matrix.push_back(0);
+    scaling_matrix.push_back(0);
+    scaling_matrix.push_back(0);
+    scaling_matrix.push_back(0);
+    scaling_matrix.push_back(kz);
+    scaling_matrix.push_back(0);
+    scaling_matrix.push_back(0);
+    scaling_matrix.push_back(0);
+    scaling_matrix.push_back(0);
+    scaling_matrix.push_back(1);
     return scale_mat;
 }
 
 // Definition of a rotation matrix about the x-axis theta degrees
 vector<GLfloat> rotation_matrix_x (float theta) {
     vector<GLfloat> rotate_mat_x;
-
-    // TODO: Define rotation matrix about the x-axis matrix
-
+    GLfloat thetaInRadians = deg2rad(theta);
+    GLfloat cosVal = cos(thetaInRadians);
+    GLfloat sinVal = sin(thetaInRadians);
+    rotate_mat_x.push_back(1);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(cosVal);
+    rotate_mat_x.push_back(sinVal * -1);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(sinVal);
+    rotate_mat_x.push_back(cosVal);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(0);
+    rotate_mat_x.push_back(1);
     return rotate_mat_x;
 }
 
@@ -131,9 +173,25 @@ vector<GLfloat> rotation_matrix_x (float theta) {
 // Definition of a rotation matrix about the y-axis by theta degrees
 vector<GLfloat> rotation_matrix_y (float theta) {
     vector<GLfloat> rotate_mat_y;
-
-    // TODO: Define rotation matrix about the y-axis matrix
-
+    GLfloat thetaInRadians = deg2rad(theta);
+    GLfloat cosVal = cos(thetaInRadians);
+    GLfloat sinVal = sin(thetaInRadians);
+    rotate_mat_y.push_back(cosVal);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(sinVal * -1);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(1);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(sinVal);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(cosVal);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(0);
+    rotate_mat_y.push_back(1);
     return rotate_mat_y;
 }
 
@@ -141,9 +199,25 @@ vector<GLfloat> rotation_matrix_y (float theta) {
 // Definition of a rotation matrix about the z-axis by theta degrees
 vector<GLfloat> rotation_matrix_z (float theta) {
     vector<GLfloat> rotate_mat_z;
-
-    // TODO: Define rotation matrix about the z-axis matrix
-
+    GLfloat thetaInRadians = deg2rad(theta);
+    GLfloat cosVal = cos(thetaInRadians);
+    GLfloat sinVal = sin(thetaInRadians);
+    rotate_mat_z.push_back(cosVal);
+    rotate_mat_z.push_back(sinVal * -1);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(sinVal);
+    rotate_mat_z.push_back(cosVal);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(1);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(0);
+    rotate_mat_z.push_back(1);
     return rotate_mat_z;
 }
 
@@ -155,7 +229,7 @@ vector<GLfloat> mat_mult(vector<GLfloat> A, vector<GLfloat> B) {
             GLfloat dot_product = 0.0;
             for (int k = 0; k < 4; k++){
                 GLfloat value = A[j+k] * B[i+k];
-                if (value < EPILSON && value > -1.0*EPILSON) {
+                if (value < EPSILON && value > -1.0*EPSILON) {
                   value = 0.0;
                 }
                 dot_product += value;
@@ -204,8 +278,8 @@ void init_camera() {
     // Camera parameters
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-
-    // TODO: Setup your camera here
+    gluPerspective(50.0, 1.0, 2.0, 10.0);
+    gluLookAt(2.0, 6.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
 }
 
@@ -233,24 +307,19 @@ void display_func() {
     // TODO: Rotate the scene using the scene vector
     vector<GLfloat> scene;
 
+
     GLfloat* scene_vertices = vector2array(scene);
     GLfloat* color_vertices = vector2array(COLOR);
     // Pass the scene vertex pointer
     glVertexPointer(3,                // 3 components (x, y, z)
                     GL_FLOAT,         // Vertex type is GL_FLOAT
                     0,                // Start position in referenced memory
-                    scene_vertices);  // Pointer to memory location to read from
-
-    // Pass the color vertex pointer
+                    scene_vertices);  // Pointer to memory location to read from    // Pass the color vertex pointer
     glColorPointer(3,                   // 3 components (r, g, b)
                    GL_FLOAT,            // Vertex type is GL_FLOAT
                    0,                   // Start position in referenced memory
-                   color_vertices);     // Pointer to memory location to read from
-
-    // Draw quad point planes: each 4 vertices
-    glDrawArrays(GL_QUADS, 0, SCENE.size()/3.0);
-
-    glFlush();			//Finish rendering
+                   color_vertices);     // Pointer to memory location to read from    // Draw quad point planes: each 4 vertices
+    glDrawArrays(GL_QUADS, 0, SCENE.size()/3.0);    glFlush();			//Finish rendering
     glutSwapBuffers();
 }
 
@@ -263,7 +332,7 @@ int main (int argc, char **argv) {
     // Initialize GLUT
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-    glutInitWindowSize(800, 600);
+    glutInitWindowSize(1920, 1080);
     // Create a window with rendering context and everything else we need
     glutCreateWindow("Assignment 3");
 
@@ -285,4 +354,3 @@ int main (int argc, char **argv) {
 
     return 0;
 }
-
