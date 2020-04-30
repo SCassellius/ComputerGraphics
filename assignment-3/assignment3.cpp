@@ -3,7 +3,7 @@
 
  Name: Cassellius, Seth
 
- Collaborators: Doe, John; Doe, Jane
+ Collaborators: Wong, Alex; Shingledecker, Bennett
  ** Note: although the assignment should be completed individually
  you may speak with classmates on high level algorithmic concepts. Please
  list their names in this section
