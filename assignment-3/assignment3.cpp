@@ -260,27 +260,23 @@ vector<GLfloat> copy_vector(vector<GLfloat> source){
 vector<GLfloat> build_cube() {
     vector<GLfloat> result;
     vector<GLfloat> bottom = init_plane();
+    bottom = to_homogeneous_coord(bottom);
     push_back_helper(bottom, result);
     vector<GLfloat> top = to_homogeneous_coord(bottom);
-    top = mat_mult(top, translation_matrix(0,2,0));
-    top = to_cartesian_coord(top);
+    top = mat_mult(translation_matrix(0,2,0), top);
     push_back_helper(top, result);
     vector<GLfloat> left_side = init_plane();
     left_side = to_homogeneous_coord(left_side);
-    left_side = mat_mult(left_side, rotation_matrix_z(90));
-    vector<GLfloat> right_side = mat_mult(left_side, translation_matrix(2,0,0));
-    left_side = mat_mult(left_side, translation_matrix(-2, 0 , 0));
-    left_side = to_cartesian_coord(left_side);
-    right_side = to_cartesian_coord(right_side);
+    left_side = mat_mult(rotation_matrix_z(90), left_side);
+    vector<GLfloat> right_side = mat_mult(translation_matrix(2,0,0), left_side);
+    left_side = mat_mult(translation_matrix(-2, 0 , 0), left_side);
     push_back_helper(left_side, result);
     push_back_helper(right_side, result);
     vector<GLfloat> front = init_plane();
     front = to_homogeneous_coord(front);
-    front = mat_mult(front, rotation_matrix_x(90));
-    vector<GLfloat> back = mat_mult(front, translation_matrix(0,0,-2));
-    front = mat_mult(front, translation_matrix(0,0,2));
-    front = to_cartesian_coord(front);
-    back = to_cartesian_coord(back);
+    front = mat_mult(rotation_matrix_x(90), front);
+    vector<GLfloat> back = mat_mult(translation_matrix(0,0,-2), front);
+    front = mat_mult(translation_matrix(0,0,2), front);
     push_back_helper(front, result);
     push_back_helper(back, result);
     return result;
@@ -342,7 +338,8 @@ void display_func() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // TODO: Rotate the scene using the scene vector
-    vector<GLfloat> scene;
+    vector<GLfloat> scene = SCENE;
+    scene = to_cartesian_coord(scene);
 
     GLfloat* scene_vertices = vector2array(scene);
     GLfloat* color_vertices = vector2array(COLOR);
