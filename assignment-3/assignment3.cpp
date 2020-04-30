@@ -1,7 +1,7 @@
 /***
  Assignment-3: Geometric Modeling of a Scene
 
- Name: Wong, Alex (Please write your name in Last Name, First Name format)
+ Name: Cassellius, Seth
 
  Collaborators: Doe, John; Doe, Jane
  ** Note: although the assignment should be completed individually
@@ -115,9 +115,9 @@ vector<GLfloat> translation_matrix (float dx, float dy, float dz) {
     translate_mat.push_back(0);
     translate_mat.push_back(1);
     translate_mat.push_back(0);
-    translate_mat.push_back(dx);
-    translate_mat.push_back(dy);
-    translate_mat.push_back(dz);
+    translate_mat.push_back((GLfloat)dx);
+    translate_mat.push_back((GLfloat)dy);
+    translate_mat.push_back((GLfloat)dz);
     translate_mat.push_back(1);
     return translate_mat;
 }
@@ -125,22 +125,22 @@ vector<GLfloat> translation_matrix (float dx, float dy, float dz) {
 // Definition of a scaling matrix
 vector<GLfloat> scaling_matrix (float sx, float sy, float sz) {
     vector<GLfloat> scale_mat;
-    scaling_matrix.push_back(sx);
-    scaling_matrix.push_back(0);
-    scaling_matrix.push_back(0);
-    scaling_matrix.push_back(0);
-    scaling_matrix.push_back(0);
-    scaling_matrix.push_back(ky);
-    scaling_matrix.push_back(0);
-    scaling_matrix.push_back(0);
-    scaling_matrix.push_back(0);
-    scaling_matrix.push_back(0);
-    scaling_matrix.push_back(kz);
-    scaling_matrix.push_back(0);
-    scaling_matrix.push_back(0);
-    scaling_matrix.push_back(0);
-    scaling_matrix.push_back(0);
-    scaling_matrix.push_back(1);
+    scale_mat.push_back((GLfloat)sx);
+    scale_mat.push_back(0);
+    scale_mat.push_back(0);
+    scale_mat.push_back(0);
+    scale_mat.push_back(0);
+    scale_mat.push_back((GLfloat)sy);
+    scale_mat.push_back(0);
+    scale_mat.push_back(0);
+    scale_mat.push_back(0);
+    scale_mat.push_back(0);
+    scale_mat.push_back((GLfloat)sz);
+    scale_mat.push_back(0);
+    scale_mat.push_back(0);
+    scale_mat.push_back(0);
+    scale_mat.push_back(0);
+    scale_mat.push_back(1);
     return scale_mat;
 }
 
@@ -240,12 +240,49 @@ vector<GLfloat> mat_mult(vector<GLfloat> A, vector<GLfloat> B) {
     return result;
 }
 
+//append one vector into another
+void push_back_helper(vector<GLfloat> from, vector<GLfloat> to){
+  for(int i = 0; i < from.size(); i++){
+    to.push_back(from.at(i));
+  }
+}
+
+//duplicate a vector
+vector<GLfloat> copy_vector(vector<GLfloat> source){
+  vector<GLfloat> copy;
+    for(int i = 0; i < source.size(); i++){
+      copy.push_back(source.at(i));
+    }
+  return copy;
+}
+
 // Builds a unit cube centered at the origin
 vector<GLfloat> build_cube() {
     vector<GLfloat> result;
-
-    // TODO: Creates a unit cube by transforming a set of planes
-
+    vector<GLfloat> bottom = init_plane();
+    push_back_helper(bottom, result);
+    vector<GLfloat> top = to_homogeneous_coord(bottom);
+    top = mat_mult(top, translation_matrix(0,2,0));
+    top = to_cartesian_coord(top);
+    push_back_helper(top, result);
+    vector<GLfloat> left_side = init_plane();
+    left_side = to_homogeneous_coord(left_side);
+    left_side = mat_mult(left_side, rotation_matrix_z(90));
+    vector<GLfloat> right_side = mat_mult(left_side, translation_matrix(2,0,0));
+    left_side = mat_mult(left_side, translation_matrix(-2, 0 , 0));
+    left_side = to_cartesian_coord(left_side);
+    right_side = to_cartesian_coord(right_side);
+    push_back_helper(left_side, result);
+    push_back_helper(right_side, result);
+    vector<GLfloat> front = init_plane();
+    front = to_homogeneous_coord(front);
+    front = mat_mult(front, rotation_matrix_x(90));
+    vector<GLfloat> back = mat_mult(front, translation_matrix(0,0,-2));
+    front = mat_mult(front, translation_matrix(0,0,2));
+    front = to_cartesian_coord(front);
+    back = to_cartesian_coord(back);
+    push_back_helper(front, result);
+    push_back_helper(back, result);
     return result;
 }
 
@@ -287,7 +324,7 @@ void init_camera() {
 vector<GLfloat> init_scene() {
     vector<GLfloat> scene;
 
-    // TODO: Build your scene here
+    push_back_helper(build_cube(), scene);
 
     return scene;
 }
@@ -306,7 +343,6 @@ void display_func() {
 
     // TODO: Rotate the scene using the scene vector
     vector<GLfloat> scene;
-
 
     GLfloat* scene_vertices = vector2array(scene);
     GLfloat* color_vertices = vector2array(COLOR);
