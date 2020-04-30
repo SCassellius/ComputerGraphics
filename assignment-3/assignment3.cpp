@@ -31,6 +31,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <vector>
+#include <string>
+#include <iostream>
 using namespace std;
 
 // If a float is < EPSILON or > -EPSILON then it should be 0
@@ -50,6 +52,18 @@ vector<GLfloat> COLOR;
  *                                                *
  *************************************************/
 
+ // Converts Cartesian coordinates to homogeneous coordinates
+ vector<GLfloat> to_homogeneous_coord(vector<GLfloat> cartesian_coords) {
+     vector<GLfloat> result;
+     for (int i = 0; i < cartesian_coords.size(); i++) {
+         result.push_back(cartesian_coords[i]);
+         if ((i+1) % 3 == 0) {
+             result.push_back(1.0);
+         }
+     }
+     return result;
+ }
+
 // Initializes a square plane of unit lengths
 vector<GLfloat> init_plane() {
     vector<GLfloat> vertices = {
@@ -58,7 +72,7 @@ vector<GLfloat> init_plane() {
         -0.5,   -0.5,   +0.0,
         +0.5,   -0.5,   +0.0
     };
-    return vertices;
+    return to_homogeneous_coord(vertices);
 }
 
 // Converts degrees to radians for rotation
@@ -73,18 +87,6 @@ GLfloat* vector2array(vector<GLfloat> vec) {
         arr[i] = vec[i];
     }
     return arr;
-}
-
-// Converts Cartesian coordinates to homogeneous coordinates
-vector<GLfloat> to_homogeneous_coord(vector<GLfloat> cartesian_coords) {
-    vector<GLfloat> result;
-    for (int i = 0; i < cartesian_coords.size(); i++) {
-        result.push_back(cartesian_coords[i]);
-        if ((i+1) % 3 == 0) {
-            result.push_back(1.0);
-        }
-    }
-    return result;
 }
 
 // Converts Cartesian coordinates to homogeneous coordinates
@@ -106,18 +108,18 @@ vector<GLfloat> translation_matrix (float dx, float dy, float dz) {
     translate_mat.push_back(1);
     translate_mat.push_back(0);
     translate_mat.push_back(0);
-    translate_mat.push_back(0);
-    translate_mat.push_back(0);
-    translate_mat.push_back(1);
-    translate_mat.push_back(0);
-    translate_mat.push_back(0);
-    translate_mat.push_back(0);
-    translate_mat.push_back(0);
-    translate_mat.push_back(1);
-    translate_mat.push_back(0);
     translate_mat.push_back((GLfloat)dx);
+    translate_mat.push_back(0);
+    translate_mat.push_back(1);
+    translate_mat.push_back(0);
     translate_mat.push_back((GLfloat)dy);
+    translate_mat.push_back(0);
+    translate_mat.push_back(0);
+    translate_mat.push_back(1);
     translate_mat.push_back((GLfloat)dz);
+    translate_mat.push_back(0);
+    translate_mat.push_back(0);
+    translate_mat.push_back(0);
     translate_mat.push_back(1);
     return translate_mat;
 }
@@ -241,10 +243,15 @@ vector<GLfloat> mat_mult(vector<GLfloat> A, vector<GLfloat> B) {
 }
 
 //append one vector into another
-void push_back_helper(vector<GLfloat> from, vector<GLfloat> to){
-  for(int i = 0; i < from.size(); i++){
-    to.push_back(from.at(i));
+vector<GLfloat> push_back_helper(vector<GLfloat> from, vector<GLfloat> to){
+  vector<GLfloat> result;
+  for(int i = 0; i < to.size(); i++){
+    result.push_back(to.at(i));
   }
+  for(int i = 0; i < from.size(); i++){
+    result.push_back(from.at(i));
+  }
+  return result;
 }
 
 //duplicate a vector
@@ -260,25 +267,26 @@ vector<GLfloat> copy_vector(vector<GLfloat> source){
 vector<GLfloat> build_cube() {
     vector<GLfloat> result;
     vector<GLfloat> bottom = init_plane();
-    bottom = to_homogeneous_coord(bottom);
-    push_back_helper(bottom, result);
-    vector<GLfloat> top = to_homogeneous_coord(bottom);
-    top = mat_mult(translation_matrix(0,2,0), top);
-    push_back_helper(top, result);
-    vector<GLfloat> left_side = init_plane();
-    left_side = to_homogeneous_coord(left_side);
-    left_side = mat_mult(rotation_matrix_z(90), left_side);
-    vector<GLfloat> right_side = mat_mult(translation_matrix(2,0,0), left_side);
-    left_side = mat_mult(translation_matrix(-2, 0 , 0), left_side);
-    push_back_helper(left_side, result);
-    push_back_helper(right_side, result);
+    vector<GLfloat> top = init_plane();
     vector<GLfloat> front = init_plane();
-    front = to_homogeneous_coord(front);
-    front = mat_mult(rotation_matrix_x(90), front);
-    vector<GLfloat> back = mat_mult(translation_matrix(0,0,-2), front);
-    front = mat_mult(translation_matrix(0,0,2), front);
-    push_back_helper(front, result);
-    push_back_helper(back, result);
+    vector<GLfloat> back = init_plane();
+    vector<GLfloat> right = init_plane();
+    vector<GLfloat> left = init_plane();
+
+    back = mat_mult(translation_matrix(0.0,0.0,-0.5), back);
+    front = mat_mult(translation_matrix(0.0,0.0,0.5), front);
+    bottom = mat_mult(rotation_matrix_x(90), bottom);
+    top = mat_mult(translation_matrix(0.0, 0.5, 0.0), bottom);
+    bottom = mat_mult(translation_matrix(0.0, -0.5, 0.0), bottom);
+    left = mat_mult(rotation_matrix_y(90), left);
+    right = mat_mult(translation_matrix(0.5, 0.0, 0.0), left);
+    left = mat_mult(translation_matrix(-0.5, 0.0, 0.0), left);
+    // result = push_back_helper(front, result);
+    // result = push_back_helper(back, result);
+    result = push_back_helper(left, result);
+    result = push_back_helper(right, result);
+    // result = push_back_helper(top, result);
+    result = push_back_helper(bottom, result);
     return result;
 }
 
@@ -319,9 +327,7 @@ void init_camera() {
 // Construct the scene using objects built from cubes/prisms
 vector<GLfloat> init_scene() {
     vector<GLfloat> scene;
-
-    push_back_helper(build_cube(), scene);
-
+    scene = push_back_helper(build_cube(), scene);
     return scene;
 }
 
@@ -338,8 +344,8 @@ void display_func() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // TODO: Rotate the scene using the scene vector
-    vector<GLfloat> scene = SCENE;
-    scene = to_cartesian_coord(scene);
+    vector<GLfloat> scene = to_cartesian_coord(SCENE);
+    //scene = mat_mult(rotation_matrix_y(THETA), scene);
 
     GLfloat* scene_vertices = vector2array(scene);
     GLfloat* color_vertices = vector2array(COLOR);
@@ -357,7 +363,7 @@ void display_func() {
 }
 
 void idle_func() {
-    THETA = THETA + 0.3;
+    THETA = THETA + 0.03;
     display_func();
 }
 
