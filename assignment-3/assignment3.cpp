@@ -263,45 +263,45 @@ vector<GLfloat> copy_vector(vector<GLfloat> source){
   return copy;
 }
 
-// Builds a unit cube centered at the origin
-// vector<GLfloat> build_cube() {
-//     vector<GLfloat> result;
-//     vector<GLfloat> bottom = init_plane();
-//     vector<GLfloat> top = init_plane();
-//     vector<GLfloat> front = init_plane();
-//     vector<GLfloat> back = init_plane();
-//     vector<GLfloat> right = init_plane();
-//     vector<GLfloat> left = init_plane();
-//
-//     back = mat_mult(translation_matrix(0.0,0.0,-0.5), back);
-//     front = mat_mult(translation_matrix(0.0,0.0,0.5), front);
-//     bottom = mat_mult(rotation_matrix_x(90), bottom);
-//     top = mat_mult(translation_matrix(0.0, 0.5, 0.0), bottom);
-//     bottom = mat_mult(translation_matrix(0.0, -0.5, 0.0), bottom);
-//     left = mat_mult(rotation_matrix_y(90), left);
-//     right = mat_mult(translation_matrix(0.5, 0.0, 0.0), left);
-//     left = mat_mult(translation_matrix(-0.5, 0.0, 0.0), left);
-//     // result = push_back_helper(front, result);
-//     // result = push_back_helper(back, result);
-//     result = push_back_helper(left, result);
-//     result = push_back_helper(right, result);
-//     // result = push_back_helper(top, result);
-//     result = push_back_helper(bottom, result);
-//     return result;
-// }
-
+//Builds a unit cube centered at the origin
 vector<GLfloat> build_cube() {
     vector<GLfloat> result;
-    vector<GLfloat> a_0 = init_plane();
-    a_0 = to_homogeneous_coord(a_0);
-    vector<GLfloat> a_1 = mat_mult(translation_matrix(0.0, 0.0, 0.5), a_0);
-    push_back_helper(a_1, result);
-    vector<GLfloat> a_2 = mat_mult(translation_matrix(0.0, 0.0, -0.5), mat_mult(rotation_matrix_y(180), a_0));
-    push_back_helper(a_2, result);
-    vector<GLfloat> a_3 = mat_mult(translation_matrix(-0.5, 0.0, 0.0), mat_mult(rotation_matrix_x(90), a_0));
-    push_back_helper(a_3, result);
+    vector<GLfloat> bottom = to_homogeneous_coord(init_plane());
+    vector<GLfloat> top = to_homogeneous_coord(init_plane());
+    vector<GLfloat> front = to_homogeneous_coord(init_plane());
+    vector<GLfloat> back = to_homogeneous_coord(init_plane());
+    vector<GLfloat> right = to_homogeneous_coord(init_plane());
+    vector<GLfloat> left = to_homogeneous_coord(init_plane());
+
+    back = mat_mult(translation_matrix(0.0,0.0,-0.5), back);
+    front = mat_mult(translation_matrix(0.0,0.0,0.5), front);
+    bottom = mat_mult(rotation_matrix_x(90), bottom);
+    top = mat_mult(translation_matrix(0.0, 0.5, 0.0), bottom);
+    bottom = mat_mult(translation_matrix(0.0, -0.5, 0.0), bottom);
+    left = mat_mult(rotation_matrix_y(90), left);
+    right = mat_mult(translation_matrix(0.5, 0.0, 0.0), left);
+    left = mat_mult(translation_matrix(-0.5, 0.0, 0.0), left);
+    result = push_back_helper(front, result);
+    result = push_back_helper(back, result);
+    result = push_back_helper(left, result);
+    result = push_back_helper(right, result);
+    result = push_back_helper(top, result);
+    result = push_back_helper(bottom, result);
     return result;
 }
+
+// vector<GLfloat> build_cube() {
+//     vector<GLfloat> result;
+//     vector<GLfloat> a_0 = init_plane();
+//     a_0 = to_homogeneous_coord(a_0);
+//     vector<GLfloat> a_1 = mat_mult(translation_matrix(0.0, 0.0, 0.5), a_0);
+//     push_back_helper(a_1, result);
+//     vector<GLfloat> a_2 = mat_mult(translation_matrix(0.0, 0.0, -0.5), mat_mult(rotation_matrix_y(180), a_0));
+//     push_back_helper(a_2, result);
+//     vector<GLfloat> a_3 = mat_mult(translation_matrix(-0.5, 0.0, 0.0), mat_mult(rotation_matrix_x(90), a_0));
+//     push_back_helper(a_3, result);
+//     return result;
+// }
 
 /**************************************************
  *            Camera and World Modeling           *
@@ -371,7 +371,8 @@ void display_func() {
                    GL_FLOAT,            // Vertex type is GL_FLOAT
                    0,                   // Start position in referenced memory
                    color_vertices);     // Pointer to memory location to read from    // Draw quad point planes: each 4 vertices
-    glDrawArrays(GL_QUADS, 0, SCENE.size()/3.0);    glFlush();			//Finish rendering
+    glDrawArrays(GL_QUADS, 0, scene.size()/3.0);
+    glFlush();			//Finish rendering
     glutSwapBuffers();
 }
 
