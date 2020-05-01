@@ -281,6 +281,7 @@ vector<GLfloat> build_cube() {
     left = mat_mult(rotation_matrix_y(90), left);
     right = mat_mult(translation_matrix(0.5, 0.0, 0.0), left);
     left = mat_mult(translation_matrix(-0.5, 0.0, 0.0), left);
+
     result = push_back_helper(front, result);
     result = push_back_helper(back, result);
     result = push_back_helper(left, result);
@@ -357,8 +358,10 @@ void display_func() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // TODO: Rotate the scene using the scene vector
-    vector<GLfloat> scene = to_cartesian_coord(SCENE);
-    //scene = mat_mult(rotation_matrix_y(THETA), scene);
+    vector<GLfloat> scene = SCENE;
+    scene = mat_mult(rotation_matrix_y(THETA), scene);
+
+    scene = to_cartesian_coord(scene);
 
     GLfloat* scene_vertices = vector2array(scene);
     GLfloat* color_vertices = vector2array(COLOR);
