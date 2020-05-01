@@ -332,12 +332,46 @@ void init_camera() {
 // Construct the scene using objects built from cubes/prisms
 vector<GLfloat> init_scene() {
     vector<GLfloat> scene;
-    vector<GLfloat> cube = build_cube();
-    vector<GLfloat> scene2 = copy_vector(cube);
-    cube = mat_mult(translation_matrix(-2.0,0.0,0.0), cube);
-    scene2 = mat_mult(translation_matrix(2.0,0.0,0.0), scene2);
-    scene = push_back_helper(cube, scene);
-    scene = push_back_helper(scene2, scene);
+    vector<GLfloat> fireplace;
+
+    vector<GLfloat> fireplace_main = build_cube();
+    fireplace_main = mat_mult(scaling_matrix(2.0,2.0,2.0), fireplace_main);
+    fireplace = push_back_helper(fireplace_main, fireplace);
+
+    vector<GLfloat> fireplace_top = build_cube();
+    fireplace_top = mat_mult(scaling_matrix(1.5,1.5,1.99), fireplace_top);
+    fireplace_top = mat_mult(rotation_matrix_z(45), fireplace_top);
+    fireplace_top = mat_mult(translation_matrix(0.0,1.0,0.0), fireplace_top);
+    fireplace = push_back_helper(fireplace_top, fireplace);
+
+    vector<GLfloat> fireplace_chimney = build_cube();
+    fireplace_chimney = mat_mult(scaling_matrix(0.4,0.4,0.4), fireplace_chimney);
+    fireplace_chimney = mat_mult(translation_matrix(0.0,2.0,0.0), fireplace_chimney);\
+    fireplace = push_back_helper(fireplace_chimney, fireplace);
+
+    vector<GLfloat> fireplace_front_left = build_cube();
+    vector<GLfloat> fireplace_front_right = build_cube();
+    vector<GLfloat> fireplace_front_top = build_cube();
+    fireplace_front_left = mat_mult(scaling_matrix(0.27, 0.9, 1.0), fireplace_front_left);
+    fireplace_front_right = copy_vector(fireplace_front_left);
+    fireplace_front_top = copy_vector(fireplace_front_left);
+    fireplace_front_left = mat_mult(translation_matrix(-0.5,-0.5,0.57), fireplace_front_left);
+    fireplace_front_right = mat_mult(translation_matrix(0.5,-0.5,0.57), fireplace_front_right);
+    fireplace = push_back_helper(fireplace_front_left, fireplace);
+    fireplace = push_back_helper(fireplace_front_right, fireplace);
+    fireplace_front_top = mat_mult(rotation_matrix_z(90), fireplace_front_top);
+    fireplace_front_top = mat_mult(scaling_matrix(1.41,1.0,1.0), fireplace_front_top);
+    fireplace_front_top = mat_mult(translation_matrix(0.0,0.09,0.57), fireplace_front_top);
+    fireplace = push_back_helper(fireplace_front_top, fireplace);
+
+    vector<GLfloat> fireplace_decal = build_cube();
+    fireplace_decal = mat_mult(scaling_matrix(0.25, 0.5, 0.5), fireplace_decal);
+    fireplace_decal = mat_mult(translation_matrix(0.0,0.6,0.8), fireplace_decal);
+    fireplace = push_back_helper(fireplace_decal, fireplace);
+
+
+    scene = push_back_helper(fireplace, scene);
+
     return scene;
 }
 
@@ -355,7 +389,7 @@ void display_func() {
 
     // TODO: Rotate the scene using the scene vector
     vector<GLfloat> scene = SCENE;
-    scene = mat_mult(rotation_matrix_y(THETA), scene);
+    //scene = mat_mult(rotation_matrix_y(THETA), scene);
 
     scene = to_cartesian_coord(scene);
 
