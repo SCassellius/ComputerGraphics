@@ -10,6 +10,9 @@
 
  Project Summary: A short paragraph (3-4 sentences) describing the work you
  did for the project.
+
+g++ -o ass3 assignment3.cpp -lglut -lGLU -lGL
+
  ***/
 
 
@@ -291,18 +294,6 @@ vector<GLfloat> build_cube() {
     return result;
 }
 
-// vector<GLfloat> build_cube() {
-//     vector<GLfloat> result;
-//     vector<GLfloat> a_0 = init_plane();
-//     a_0 = to_homogeneous_coord(a_0);
-//     vector<GLfloat> a_1 = mat_mult(translation_matrix(0.0, 0.0, 0.5), a_0);
-//     push_back_helper(a_1, result);
-//     vector<GLfloat> a_2 = mat_mult(translation_matrix(0.0, 0.0, -0.5), mat_mult(rotation_matrix_y(180), a_0));
-//     push_back_helper(a_2, result);
-//     vector<GLfloat> a_3 = mat_mult(translation_matrix(-0.5, 0.0, 0.0), mat_mult(rotation_matrix_x(90), a_0));
-//     push_back_helper(a_3, result);
-//     return result;
-// }
 
 /**************************************************
  *            Camera and World Modeling           *
@@ -341,7 +332,12 @@ void init_camera() {
 // Construct the scene using objects built from cubes/prisms
 vector<GLfloat> init_scene() {
     vector<GLfloat> scene;
-    scene = push_back_helper(build_cube(), scene);
+    vector<GLfloat> cube = build_cube();
+    vector<GLfloat> scene2 = copy_vector(cube);
+    cube = mat_mult(translation_matrix(-2.0,0.0,0.0), cube);
+    scene2 = mat_mult(translation_matrix(2.0,0.0,0.0), scene2);
+    scene = push_back_helper(cube, scene);
+    scene = push_back_helper(scene2, scene);
     return scene;
 }
 
