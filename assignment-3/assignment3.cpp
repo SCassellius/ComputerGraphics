@@ -324,7 +324,7 @@ void init_camera() {
     // Camera parameters
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(50.0, 1.0, 2.0, 10.0);
+    gluPerspective(50.0, 1.0, 1.0, 15.0);
     gluLookAt(2.0, 6.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
 }
@@ -369,9 +369,86 @@ vector<GLfloat> init_scene() {
     fireplace_decal = mat_mult(translation_matrix(0.0,0.6,0.8), fireplace_decal);
     fireplace = push_back_helper(fireplace_decal, fireplace);
 
+    fireplace = mat_mult(translation_matrix(0.0,0.0,-3.0), fireplace);
 
     scene = push_back_helper(fireplace, scene);
 
+    vector<GLfloat> left_footrest;
+    vector<GLfloat> footrest_leg_1 = build_cube();
+    footrest_leg_1 = mat_mult(scaling_matrix(0.05,0.5,0.05), footrest_leg_1);
+    vector<GLfloat> footrest_leg_2 = copy_vector(footrest_leg_1);
+    vector<GLfloat> footrest_leg_3 = copy_vector(footrest_leg_1);
+    vector<GLfloat> footrest_leg_4 = copy_vector(footrest_leg_1);
+    vector<GLfloat> footrest_cross_1 = copy_vector(footrest_leg_1);
+    footrest_leg_1 = mat_mult(translation_matrix(-0.12,0.0,-0.12), footrest_leg_1);
+    footrest_leg_2 = mat_mult(translation_matrix(0.12,0.0,-0.12), footrest_leg_2);
+    footrest_leg_3 = mat_mult(translation_matrix(0.12,0.0,0.12), footrest_leg_3);
+    footrest_leg_4 = mat_mult(translation_matrix(-0.12,0.0,0.12), footrest_leg_4);
+    left_footrest = push_back_helper(footrest_leg_1, left_footrest);
+    left_footrest = push_back_helper(footrest_leg_2, left_footrest);
+    left_footrest = push_back_helper(footrest_leg_3, left_footrest);
+    left_footrest = push_back_helper(footrest_leg_4, left_footrest);
+    footrest_cross_1 = mat_mult(scaling_matrix(1.0,0.7,1.0), footrest_cross_1);
+    footrest_cross_1 = mat_mult(rotation_matrix_z(90), footrest_cross_1);
+    footrest_cross_1 = mat_mult(rotation_matrix_y(45), footrest_cross_1);
+    footrest_cross_1 = mat_mult(translation_matrix(0.0,-0.15,0.0), footrest_cross_1);
+    left_footrest = push_back_helper(footrest_cross_1, left_footrest);
+    vector<GLfloat> footrest_cross_2 = copy_vector(footrest_cross_1);
+    footrest_cross_2 = mat_mult(rotation_matrix_y(90), footrest_cross_2);
+    left_footrest = push_back_helper(footrest_cross_2, left_footrest);
+
+    vector<GLfloat> footrest_top = build_cube();
+    footrest_top= mat_mult(scaling_matrix(0.3,0.05,0.3), footrest_top);
+    footrest_top= mat_mult(translation_matrix(0.0,0.27,0.0), footrest_top);
+    left_footrest = push_back_helper(footrest_top, left_footrest);
+    vector<GLfloat> footrest_rail_1 = build_cube();
+    footrest_rail_1= mat_mult(scaling_matrix(0.05,0.075,0.3), footrest_rail_1);
+    footrest_rail_1= mat_mult(translation_matrix(-0.12,0.3,0.0), footrest_rail_1);
+    vector<GLfloat> footrest_rail_2 = copy_vector(footrest_rail_1);
+    footrest_rail_2 = mat_mult(translation_matrix(0.24,0.0,0.0), footrest_rail_2);
+    left_footrest = push_back_helper(footrest_rail_1, left_footrest);
+    left_footrest = push_back_helper(footrest_rail_2, left_footrest);
+
+
+    vector<GLfloat> left_chair = copy_vector(left_footrest);
+    vector<GLfloat> left_chair_back = build_cube();
+    left_chair_back = mat_mult(scaling_matrix(0.3, 0.75, 0.03), left_chair_back);
+    left_chair_back = mat_mult(rotation_matrix_x(-27), left_chair_back);
+    left_chair_back = mat_mult(translation_matrix(0.0, 0.6, -0.3), left_chair_back);
+
+    vector<GLfloat> left_chair_support_1 = copy_vector(footrest_leg_1);
+    vector<GLfloat> left_chair_support_2 = copy_vector(footrest_leg_2);
+    vector<GLfloat> left_chair_support_3 = copy_vector(footrest_leg_3);
+    vector<GLfloat> left_chair_support_4 = copy_vector(footrest_leg_4);
+    left_chair_support_1 = mat_mult(translation_matrix(0.0, 0.25,0.0), left_chair_support_1);
+    left_chair_support_2 = mat_mult(translation_matrix(0.0, 0.25,0.0), left_chair_support_2);
+    left_chair_support_3 = mat_mult(translation_matrix(0.0, 0.25,0.0), left_chair_support_3);
+    left_chair_support_4 = mat_mult(translation_matrix(0.0, 0.25,0.0), left_chair_support_4);
+    left_chair = push_back_helper(left_chair_support_1, left_chair);
+    left_chair = push_back_helper(left_chair_support_2, left_chair);
+    left_chair = push_back_helper(left_chair_support_3, left_chair);
+    left_chair = push_back_helper(left_chair_support_4, left_chair);
+
+
+    vector<GLfloat> left_chair_rail_1 = copy_vector(footrest_rail_1);
+    vector<GLfloat> left_chair_rail_2 = copy_vector(footrest_rail_2);
+    left_chair_rail_1 =mat_mult(translation_matrix(0.0, 0.25,0.0), left_chair_rail_1);
+    left_chair_rail_2 =mat_mult(translation_matrix(0.0, 0.25,0.0), left_chair_rail_2);
+    left_chair = push_back_helper(left_chair_rail_1, left_chair);
+    left_chair = push_back_helper(left_chair_rail_2, left_chair);
+
+
+    left_chair = push_back_helper(left_chair_back, left_chair);
+    left_footrest = mat_mult(translation_matrix(0.0,0.0,0.5), left_footrest);
+    left_chair = push_back_helper(left_footrest, left_chair);
+    vector<GLfloat> right_chair = copy_vector(left_chair);
+    left_chair = mat_mult(rotation_matrix_y(-21), left_chair);
+    left_chair = mat_mult(translation_matrix(-0.5,0.0,-0.2), left_chair);
+    scene = push_back_helper(left_chair, scene);
+    right_chair = mat_mult(rotation_matrix_y(21), right_chair);
+    right_chair = mat_mult(translation_matrix(0.5,0.0,-0.2), right_chair);
+    scene = push_back_helper(right_chair, scene);
+    scene = mat_mult(translation_matrix(0.0,0.0,1.0), scene);
     return scene;
 }
 
@@ -389,7 +466,7 @@ void display_func() {
 
     // TODO: Rotate the scene using the scene vector
     vector<GLfloat> scene = SCENE;
-    //scene = mat_mult(rotation_matrix_y(THETA), scene);
+    scene = mat_mult(rotation_matrix_y(THETA), scene);
 
     scene = to_cartesian_coord(scene);
 
@@ -407,6 +484,9 @@ void display_func() {
     glDrawArrays(GL_QUADS, 0, scene.size()/3.0);
     glFlush();			//Finish rendering
     glutSwapBuffers();
+
+    free(color_vertices);
+    free(scene_vertices);
 }
 
 void idle_func() {
