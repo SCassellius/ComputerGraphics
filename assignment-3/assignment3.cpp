@@ -8,8 +8,10 @@
  you may speak with classmates on high level algorithmic concepts. Please
  list their names in this section
 
- Project Summary: A short paragraph (3-4 sentences) describing the work you
- did for the project.
+ Project Summary: First used unit planes to construct a cube.
+ Then I applied translations, rotations, and scaled cubes into looking like my backyard.
+ Afterwards, I added every 'cube' into a single vector, and applied a continuous rotations
+ to it to make the scene rotate in front of the camera. 
 
 g++ -o ass3 assignment3.cpp -lglut -lGLU -lGL
 
